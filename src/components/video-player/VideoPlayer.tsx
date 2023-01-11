@@ -1,24 +1,36 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router";
 import { useInView } from "react-intersection-observer";
 
-import { VideoType } from "../../util/api/video-api";
+import { muxClient, VideoInfo } from "../../util/api/video-api";
+import MuxPlayer from "@mux/mux-player-react";
 import { BsVolumeMuteFill, BsVolumeDownFill } from "react-icons/bs";
-import { AiFillCloseCircle } from "react-icons/ai";
-import { FcPrevious, FcNext } from "react-icons/fc";
-
-import ApplePayLogo from "../../assets/images/logos/Apple Pay Logo White 2.png";
+import { AiFillCloseCircle, AiOutlinePlus } from "react-icons/ai";
+import { FcPrevious, FcNext, FcCollapse, FcExpand } from "react-icons/fc";
 
 import { VideoPlayerContainer } from "./VideoPlayer.styles";
 
 type VideoPlayerProps = {
-  video: VideoType;
+  videoId: string; //VideoInfo;
 };
 
-const VideoPlayer = ({ video }: VideoPlayerProps) => {
+const isVideoReady = (video: VideoInfo) => {
+  return video.muxAsset.status === "ready";
+};
+
+const getPlaybackId = (video: VideoInfo) => {
+  if (!video.muxAsset.playback_ids) {
+    return "";
+  }
+
+  return video.muxAsset.playback_ids[0].id;
+};
+
+const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
   const [muted, setMuted] = useState(true);
   const [opaque, setOpaque] = useState(0.5);
   const [isPlayed, setIsPlayed] = useState(true);
+  const [video, setVideo] = useState<VideoInfo>();
+  const [isVideoExistAndReady, setIsVideoExistAndReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const { ref, inView } = useInView({
@@ -28,17 +40,24 @@ const VideoPlayer = ({ video }: VideoPlayerProps) => {
     threshold: 0.1,
   });
 
-  const navigate = useNavigate();
-
-
   const muteVideo = (e: { stopPropagation: () => void }) => {
     e.stopPropagation();
     setMuted((current) => !current);
   };
 
-  const close = () => {
-    navigate(-1); // history.goBack()
-  };
+  useEffect(() => {
+    const getVideoInfo = async () => {
+      const responseData = await muxClient.loadVideoInfo(videoId);
+      setVideo(() => responseData);
+      setIsVideoExistAndReady(isVideoReady(responseData));
+      setMuted(false);
+    };
+
+    if (inView && !video) {
+      console.log("AJA");
+      getVideoInfo();
+    }
+  }, [inView, videoId, video]);
 
   const pauseVideo = (e: any) => {
     const video = videoRef.current;
@@ -51,51 +70,36 @@ const VideoPlayer = ({ video }: VideoPlayerProps) => {
     }
   };
 
-  const purchaseButton = (e: { stopPropagation: () => void }) => {
-    e.stopPropagation();
-    console.log(e);
-  };
-
   useEffect(() => {
     if (!inView) {
       setMuted(true);
       setOpaque(0.5);
     } else {
-      setTimeout(function () {
-        setOpaque(0);
-      }, 3000);
+      setMuted(false);
     }
   }, [inView]);
 
-  console.log(opaque)
   return (
     <VideoPlayerContainer opacity={opaque} ref={ref}>
-      <video
-        ref={videoRef}
-        src={video.url}
-        playsInline
-        autoPlay
-        preload={inView ? "auto" : "none"}
-        loop
-        muted={muted}
-      />
+      {!isVideoExistAndReady && <div>video preparing...</div>}
+      {inView && isVideoExistAndReady && (
+        <MuxPlayer
+          streamType="on-demand"
+          muted={muted}
+          autoPlay
+          loop
+          playbackId={getPlaybackId(video!)}
+          metadata={{
+            video_id: "video-id-54321",
+            video_title: "Test video title",
+            viewer_user_id: "user-id-007",
+          }}
+        />
+      )}
       <div className="videoPlayer-content" onClick={pauseVideo}>
-        <div className="videoPlayer-top">
-          <div className="videoPlayer-top-close" onClick={close}>
-            <AiFillCloseCircle />
-          </div>
-          {/* {video.merchandiseId && (
-            <div className="videoPlayer-pay-icon" onClick={purchaseButton}>
-              <img src={ApplePayLogo} alt="Apple Pay" />
-            </div>
-          )} */}
-        </div>
-        <div className='video-player-middle'>
-          <div className='video-player-middle-left'><FcPrevious /></div>
-          <div className='video-player-middle-right'><FcNext /></div>
-          
-        </div>
         <div className="videoPlayer-bottom">
+          <div style={{ width: "3em" }}></div>
+          <div className="swipe-action-icon-bottom"></div>
           <div className="videoPlayer-mute-icon" onClick={muteVideo}>
             {muted ? <BsVolumeMuteFill /> : <BsVolumeDownFill />}
           </div>

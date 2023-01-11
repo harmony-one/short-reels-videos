@@ -8,7 +8,6 @@ import {
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { Helmet } from "react-helmet";
-
 import { config } from "./util/web3/config";
 
 import VideoReels from "./routes/video-reels/VideoReels";
@@ -18,9 +17,6 @@ import VideoUpload from "./routes/video-upload/VideoUpload";
 import Subscribe from "./routes/subscribe/Subscribe";
 
 import "./App.css";
-import CheckoutSuccess from "./routes/checkout/CheckoutSuccess";
-import CheckoutFailure from "./routes/checkout/CheckoutFailure";
-
 
 const projectId = process.env.REACT_APP_WALLETCONNECT_PROJECTID!;
 
@@ -47,7 +43,7 @@ function App() {
       <WagmiConfig client={wagmiClient}>
         <Helmet>
           <meta charSet="utf-8" />
-          <title>.s.country videos | Harmony</title>
+          <title>Video Player Demo | Harmony</title>
           <meta name="description" content="Description" />
         </Helmet>
         <Routes>
@@ -57,8 +53,6 @@ function App() {
             <Route path="subscribe/" element={<Subscribe />} />
           </Route>
           <Route path="/:vanityUrl" element={<VideoReels />} />
-          <Route path="success/" element={<CheckoutSuccess />}/>
-          <Route path="cancel/" element={<CheckoutFailure />} />
         </Routes>
         <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
       </WagmiConfig>

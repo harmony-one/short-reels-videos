@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@dropzone-ui/react": "^6.7.20",
+    "@mux/mux-player-react": "^1.5.1",
     "@reduxjs/toolkit": "^1.9.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -29,6 +30,7 @@
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
+    "react-swipeable": "^7.0.0",
     "react-video-thumbnail-image": "^0.1.7",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.6",

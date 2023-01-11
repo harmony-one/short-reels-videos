@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import VideoPlayer from '../../components/video-player/VideoPlayer';
 import Slider from "react-slick";
-import { useParams } from 'react-router-dom'
-import { getOwnerVideos, VideoType } from '../../util/api/video-api'
+import { useParams, useNavigate } from 'react-router-dom'
+import { getOwnerVideos, muxClient, VideoInfo, VideoType } from '../../util/api/video-api'
+import { useSwipeable } from 'react-swipeable'
 
 import './VideoReels.styles.scss';
 
 const VideoReels = () => {
-  const [videos, setVideos] = useState<VideoType[]>([])
-  const { vanityUrl } = useParams()
+  const [videos, setVideos] = useState<VideoInfo[]>([])
+  const { vanityUrl } = useParams();
+  const navigate = useNavigate();
+  const handlers = useSwipeable({
+    onSwipedUp: (eventData) => navigate('/upload/'),
+    onSwipedDown: (eventData) => navigate('/'), 
+    trackMouse: true,
+    preventScrollOnSwipe: true,
+  });
+
 
   const sliderSettings = {
     // dots: true,
@@ -26,20 +35,25 @@ const VideoReels = () => {
     //   },
     // ],
   }
-
+  
   useEffect(() => {
-    let videoList = getOwnerVideos('test');
-    const index = videoList.findIndex(v => v.vanityUrl === vanityUrl);
-    videoList.unshift(videoList.splice(index, 1)[0])
-    setVideos(videoList)
-
+    const getVideos = async () => {
+      let videoList = await muxClient.loadVideoList();
+      const index = videoList.findIndex((v:VideoInfo) => v.muxPlaybackId === vanityUrl);
+      videoList.unshift(videoList.splice(index, 1)[0])
+      console.log(videoList, vanityUrl);
+      setVideos(videoList)
+    }
+    
+    getVideos();
+  
   }, [])
 
   return (
-    <div className='video-reels'>
+    <div className='video-reels'  {...handlers}>
       <Slider className='carousel' {...sliderSettings}>
         {videos.map((video: any, index: React.Key | null | undefined) => {
-          return <VideoPlayer video={video} key={index} />
+          return <VideoPlayer videoId={video.id} key={index} />
         })}
       </Slider>
     </div>

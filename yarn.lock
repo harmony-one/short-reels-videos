@@ -2090,6 +2090,39 @@
     "@motionone/dom" "^10.15.3"
     tslib "^2.3.1"
 
+"@mux/mux-player-react@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@mux/mux-player-react/-/mux-player-react-1.5.1.tgz#7571fcccc08766360f70124107257ffdc65e0d9a"
+  integrity sha512-6VdNOSyi4aBLWL2oFayQQJ/LnVfl2bitTOLRKHziCRUD8SYIczodD43YVCyrSaHREmrUz6Fn9Q5+b8N2WBp+Sw==
+  dependencies:
+    "@mux/mux-player" "1.5.1"
+    "@mux/playback-core" "0.15.0"
+    prop-types "^15.7.2"
+
+"@mux/mux-player@1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@mux/mux-player/-/mux-player-1.5.1.tgz#39275b05e3bdcba70145ef0ae4c67438c4296772"
+  integrity sha512-aLqeVLzT/bmcMDSOQ3Fu+sjhBczUPki0bMhpLyZEMUfN40lIhsyMgYZnx1JI8M3gVL+zzISx2nJ8G45a0bZF+Q==
+  dependencies:
+    "@mux/mux-video" "0.12.0"
+    "@mux/playback-core" "0.15.0"
+    media-chrome "0.16.2"
+
+"@mux/mux-video@0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@mux/mux-video/-/mux-video-0.12.0.tgz#21e0798c057cd6ac3bfbd5c93c26a77508f8f11d"
+  integrity sha512-Nr5McFX0fxV+qnIKOf554wNm2f1YdIy8fJxg48E69QBnMxN8dhWAZrsuFm/UJwFyDpsl7T/CbCDp6JmOwgBEUg==
+  dependencies:
+    "@mux/playback-core" "0.15.0"
+
+"@mux/playback-core@0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@mux/playback-core/-/playback-core-0.15.0.tgz#bee02abf9eba569d49b6505fe1d70525586c6f62"
+  integrity sha512-xBYd4ci8RYFGJUUAw3uX/DH4UUTzwb2FPePK8L5U+Q7SSPjQp/KiHzElJwEaAXT2Cv1H2s794nOblPTXHER/bw==
+  dependencies:
+    hls.js "1.2.3"
+    mux-embed "^4.14.0"
+
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz#dbf733a965ca47b1973177dc0bb6c889edcfb129"
@@ -7487,6 +7520,11 @@ hey-listen@^1.0.8:
   resolved "https://registry.yarnpkg.com/hey-listen/-/hey-listen-1.0.8.tgz#8e59561ff724908de1aa924ed6ecc84a56a9aa68"
   integrity sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==
 
+hls.js@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.2.3.tgz#9b9e5d5b05c4912dacec173962694b710eea33ac"
+  integrity sha512-CC/vHi82ldiiydIhliNI3whlcepRXxI2jdpd/KKb6lyEv+74e7lXs4cGk5PHfTLxZMKOj6+m5LX9VAbvV/r7AQ==
+
 hmac-drbg@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
@@ -9179,6 +9217,11 @@ mdn-data@2.0.4:
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.4.tgz#699b3c38ac6f1d728091a64650b65d388502fd5b"
   integrity sha512-iV3XNKw06j5Q7mi6h+9vbx23Tv7JkjEVgKHW4pimwyDGWm0OIQntJJ+u1C6mg6mK1EaTv42XQ7w76yuzH7M2cA==
 
+media-chrome@0.16.2:
+  version "0.16.2"
+  resolved "https://registry.yarnpkg.com/media-chrome/-/media-chrome-0.16.2.tgz#45d9f5c8557a36d8d31a3244ab16b3ca550dc82b"
+  integrity sha512-2oNkmoJ+MPqGfQzs7U3ds9kzxRdhcO90T70Wo6s3QnzpdvCgi68T6XLIdep+JvVLgkO6+L0UuqfXK3H9L/uBaw==
+
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
@@ -9425,6 +9468,11 @@ multihashes@^0.4.15, multihashes@~0.4.15:
     buffer "^5.5.0"
     multibase "^0.7.0"
     varint "^5.0.0"
+
+mux-embed@^4.14.0:
+  version "4.18.0"
+  resolved "https://registry.yarnpkg.com/mux-embed/-/mux-embed-4.18.0.tgz#6c5ef0e4d7e9ebd875a9c58420926db9429428e0"
+  integrity sha512-9tgHLg8plmJAOiOzG2Tvi1MO7LO44DaC4V9W67kxrfzqco37UmreiKBwvrykncW4VUwU7+nectz8AUjcYBCz4g==
 
 nano-json-stream-parser@^0.1.2:
   version "0.1.2"
@@ -11068,6 +11116,11 @@ react-slick@^0.29.0:
     json2mq "^0.2.0"
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
+
+react-swipeable@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-7.0.0.tgz#7a12570ee435d35ac700511de338384aa78d12cd"
+  integrity sha512-NI7KGfQ6gwNFN0Hor3vytYW3iRfMMaivGEuxcADOOfBCx/kqwXE8IfHFxEcxSUkxCYf38COLKYd9EMYZghqaUA==
 
 react-video-thumbnail-image@^0.1.7:
   version "0.1.7"
