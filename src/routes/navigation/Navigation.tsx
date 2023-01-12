@@ -1,6 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
-import DomainRecord from "../../components/domain-record/DomainRecord";
-import Navbar from "../../components/navbar/Navbar";
+import { Outlet } from "react-router-dom";
 
 import './Navigation.styles.scss';
 
