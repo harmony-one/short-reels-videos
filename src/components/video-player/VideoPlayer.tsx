@@ -3,9 +3,8 @@ import { useInView } from "react-intersection-observer";
 
 import { muxClient, VideoInfo } from "../../util/api/video-api";
 import MuxPlayer from "@mux/mux-player-react";
+
 import { BsVolumeMuteFill, BsVolumeDownFill } from "react-icons/bs";
-import { AiFillCloseCircle, AiOutlinePlus } from "react-icons/ai";
-import { FcPrevious, FcNext, FcCollapse, FcExpand } from "react-icons/fc";
 
 import { VideoPlayerContainer } from "./VideoPlayer.styles";
 
@@ -29,9 +28,9 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
   const [muted, setMuted] = useState(true);
   const [opaque, setOpaque] = useState(0.5);
   const [isPlayed, setIsPlayed] = useState(true);
-  const [video, setVideo] = useState<VideoInfo>();
+  const [video, setVideo] = useState<VideoInfo | undefined>(undefined);
   const [isVideoExistAndReady, setIsVideoExistAndReady] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<any>(null);
 
   const { ref, inView } = useInView({
     /* Optional options */
@@ -54,7 +53,6 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
     };
 
     if (inView && !video) {
-      console.log("AJA");
       getVideoInfo();
     }
   }, [inView, videoId, video]);
@@ -74,6 +72,7 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
     if (!inView) {
       setMuted(true);
       setOpaque(0.5);
+      // setVideo(undefined);
     } else {
       setMuted(false);
     }
@@ -82,13 +81,16 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
   return (
     <VideoPlayerContainer opacity={opaque} ref={ref}>
       {!isVideoExistAndReady && <div>video preparing...</div>}
-      {inView && isVideoExistAndReady && (
+      {inView && video && isVideoExistAndReady && (
         <MuxPlayer
+          // preferPlayback="mse"
+          ref={videoRef}
           streamType="on-demand"
           muted={muted}
           autoPlay
           loop
-          playbackId={getPlaybackId(video!)}
+          // loading="viewport"
+          playbackId={getPlaybackId(video)}
           metadata={{
             video_id: "video-id-54321",
             video_title: "Test video title",

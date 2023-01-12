@@ -25,14 +25,6 @@ const VideoUpload = () => {
 
   return (
     <VideoUploadDiv opacity={opaque} {...handlers}>
-      <div className="swipe-action-icon">
-        <div className="swipe-action-icon-top">
-          <FcCollapse />
-        </div>
-        <div className="swipe-action-icon-bottom">
-          <AiFillCloseCircle />
-        </div>
-      </div>
       <div className="upload-icon">
         <AiOutlinePlus />
       </div>

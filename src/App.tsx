@@ -48,7 +48,8 @@ function App() {
         </Helmet>
         <Routes>
           <Route path="/" element={<Navigation />} >
-            <Route path="/" element={<VideoHome />} />
+            <Route path="/" element={<VideoReels />} />
+            <Route path="home/" element={<VideoHome />} />
             <Route path="upload/" element={<VideoUpload />} />
             <Route path="subscribe/" element={<Subscribe />} />
           </Route>

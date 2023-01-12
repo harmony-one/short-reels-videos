@@ -13,7 +13,7 @@ const VideoReels = () => {
   const navigate = useNavigate();
   const handlers = useSwipeable({
     onSwipedUp: (eventData) => navigate('/upload/'),
-    onSwipedDown: (eventData) => navigate('/'), 
+    onSwipedDown: (eventData) => navigate('/home/'), 
     trackMouse: true,
     preventScrollOnSwipe: true,
   });
@@ -39,7 +39,7 @@ const VideoReels = () => {
   useEffect(() => {
     const getVideos = async () => {
       let videoList = await muxClient.loadVideoList();
-      const index = videoList.findIndex((v:VideoInfo) => v.muxPlaybackId === vanityUrl);
+      const index = videoList.findIndex((v:VideoInfo) => v.id === vanityUrl);
       videoList.unshift(videoList.splice(index, 1)[0])
       console.log(videoList, vanityUrl);
       setVideos(videoList)

@@ -58,7 +58,7 @@ const Navbar = () => {
   
   return (
     <div className="navbar">
-      <div className='nav-home' onClick={() => navigate('/')}>
+      <div className='nav-home' onClick={() => navigate('home/')}>
         <AiFillHome />
       </div>
       <div className='nav-action'>

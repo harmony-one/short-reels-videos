@@ -27,6 +27,43 @@ export interface VideoInfo {
   }
 }
 
+export const muxClient = {
+  loadVideoList: async () => {
+    const response = await fetch(`${HOST}/videos`, {
+      method: 'Get',
+      mode: 'cors',
+    });
+
+    const responseData = await response.json();
+
+    return responseData.data.slice(0, 3);
+  },
+  
+  uploadVideo: async (data: FormData) => {
+
+    const response = await fetch(`${HOST}/upload`, {
+      method: 'POST',
+      body: data,
+      mode: 'cors',
+    });
+
+    const responseData = await response.json();
+
+    return responseData.data;
+  },
+
+  loadVideoInfo: async (videoId: string) => {
+    const response = await fetch(`${HOST}/videos/${videoId}`, {
+      method: 'Get',
+      mode: 'cors',
+    });
+
+    const responseData = await response.json();
+
+    return responseData.data;
+  }
+}
+
 export const TEST_VIDEOS = [
   {
     url: video1,
@@ -56,42 +93,4 @@ export const getOwnerVideos = (name: string) => {
 
 export const getVideo = (vanityUrl: string) => {
   return TEST_VIDEOS.find(v => v.vanityUrl === vanityUrl)
-}
-
-
-
-export const muxClient = {
-  loadVideoList: async () => {
-    const response = await fetch(`${HOST}/videos`, {
-      method: 'Get',
-      mode: 'cors',
-    });
-
-    const responseData = await response.json();
-
-    return responseData.data.slice(0, 4);
-  },
-  
-  uploadVideo: async (data: FormData) => {
-
-    const response = await fetch(`${HOST}/upload`, {
-      method: 'POST',
-      body: data,
-      mode: 'cors',
-    });
-
-    const responseData = await response.json();
-
-    return responseData.data;
-  },
-  loadVideoInfo: async (videoId: string) => {
-    const response = await fetch(`${HOST}/videos/${videoId}`, {
-      method: 'Get',
-      mode: 'cors',
-    });
-
-    const responseData = await response.json();
-
-    return responseData.data;
-  }
 }
