@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import VideoThumbnail from "../../components/video-thumbnail/VideoThumbnail";
-import { client } from '../../util/api/client'
-import { VideoInfo } from '../../util/api/types';
+import { client } from "../../util/api/client";
+import { VideoInfo } from "../../util/api/types";
 
 import "./VideoHome.styles.scss";
 
@@ -10,16 +10,13 @@ const VideoHome = () => {
 
   const loadVideoList = useCallback(async () => {
     const list = await client.loadVideoList();
-    console.log('list', list);
     setVideoList(() => list);
   }, []);
 
   useEffect(() => {
-    console.log('useEffect')
     loadVideoList();
   }, [loadVideoList]);
 
-  console.log(videoList);
   return (
     <>
       <div className="video-home">
