@@ -3,6 +3,7 @@ body {
   font-family: "Inter", Verdana, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #70a3d2;
 }
 
 code {
