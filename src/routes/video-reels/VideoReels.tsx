@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import VideoPlayer from "../../components/video-player/VideoPlayer";
+import { useSwipeable } from "react-swipeable";
 import Slider from "react-slick";
 import { useParams, useNavigate } from "react-router-dom";
+
+import VideoPlayer from "../../components/video-player/VideoPlayer";
 import { client } from "../../util/api/client";
 import { VideoInfo } from "../../util/api/types";
-import { useSwipeable } from "react-swipeable";
 
 import "./VideoReels.styles.scss";
 
@@ -12,7 +13,8 @@ const VideoReels = () => {
   const [videos, setVideos] = useState<VideoInfo[]>([]);
   const { vanityUrl } = useParams();
   const navigate = useNavigate();
-  const wheelRef=useRef<HTMLDivElement>(null)
+  const wheelRef=useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<any>(null);
   const handlers = useSwipeable({
     onSwipedUp: (eventData) => navigate("/home/upload/"),
     onSwipedDown: (eventData) => navigate("/home/"),
@@ -21,20 +23,10 @@ const VideoReels = () => {
   });
 
   const sliderSettings = {
-    // dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // responsive: [
-    //   {
-    //     // breakpoint: 600,
-    //     settings: {
-    //       slidesToShow: 1,
-    //       slidesToScroll: 1,
-    //     },
-    //   },
-    // ],
   };
 
   useEffect(() => {
@@ -55,9 +47,9 @@ const VideoReels = () => {
     const handleWheelEvent = (event: WheelEvent) => {
       const deltaY = event.deltaY;
       if (deltaY < 0) {
-        console.log("up");
+        sliderRef.current.slickNext();
       } else {
-        console.log("down");
+        sliderRef.current.slickPrev();
       }
     };
 
@@ -70,10 +62,22 @@ const VideoReels = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleEsc = (event: any) => {
+       if (event.keyCode === 27) {
+        navigate("/home/");
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+
   return (
     <div className="video-reels" {...handlers}>
       <div ref={wheelRef}> 
-        <Slider className="carousel" {...sliderSettings} >
+        <Slider className="carousel" {...sliderSettings} ref={sliderRef}>
           {videos.map((video: any, index: React.Key | null | undefined) => {
             return <VideoPlayer videoId={video.id} key={index} />;
           })}

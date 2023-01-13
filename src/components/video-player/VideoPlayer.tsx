@@ -61,11 +61,14 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
 
   const pauseVideo = (e: any) => {
     const video = videoRef.current;
+    // video.volumen = 0;
+    // console.log({video})
     if (isPlayed && video) {
       video.pause();
       setIsPlayed(false);
     } else {
       video && video.play();
+      
       setIsPlayed(true);
     }
   };
@@ -77,6 +80,7 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
     setMuted(true);
   }, [inView]);
 
+  // console.log('volumen',videoRef?.current && videoRef.current.volumen);
   return (
     <VideoPlayerContainer opacity={opaque} ref={ref}>
       {!isVideoExistAndReady && <div className='videoPlayer-preparation'>...</div>}
