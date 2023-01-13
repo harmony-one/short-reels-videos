@@ -1,23 +1,34 @@
-import React, { useEffect, useState } from "react";
-import VideoGallery from "../../components/video-gallery/VideoGallery";
-import { getOwnerVideos, VideoType } from "../../util/api/video-api";
+import React, { useCallback, useEffect, useState } from "react";
+import VideoThumbnail from "../../components/video-thumbnail/VideoThumbnail";
+import { client } from '../../util/api/client'
+import { VideoInfo } from '../../util/api/types';
 
 import "./VideoHome.styles.scss";
 
 const VideoHome = () => {
-  const [videos, setVideos] = useState<VideoType[]>([]);
-  const [featureVideo, setFeatureVideo] = useState<VideoType>();
+  const [videoList, setVideoList] = useState<VideoInfo[]>([]);
 
-  useEffect(() => {
-    const videos = getOwnerVideos("test");
-    setVideos(videos);
-    setFeatureVideo(videos[0]);
+  const loadVideoList = useCallback(async () => {
+    const list = await client.loadVideoList();
+    console.log('list', list);
+    setVideoList(() => list);
   }, []);
 
+  useEffect(() => {
+    console.log('useEffect')
+    loadVideoList();
+  }, [loadVideoList]);
+
+  console.log(videoList);
   return (
     <>
       <div className="video-home">
-        <VideoGallery videos={videos} />
+        <div className="video-gallery">
+          {videoList.length > 0 &&
+            videoList.map((video, index) => (
+              <VideoThumbnail video={video} key={index} />
+            ))}
+        </div>
       </div>
     </>
   );

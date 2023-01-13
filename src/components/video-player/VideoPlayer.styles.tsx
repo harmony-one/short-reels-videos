@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const VideoPlayerContainer = styled.div<{ opacity: number}>`
+export const VideoPlayerContainer = styled.div<{ opacity: number }>`
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -8,17 +8,45 @@ export const VideoPlayerContainer = styled.div<{ opacity: number}>`
   height: 100vh;
   //https://stackoverflow.com/questions/37112218/css3-100vh-not-constant-in-mobile-browser
   height: -webkit-fill-available;
-
+  background-color: black;
+  
+  .videoPlayer-preparation {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    font-size: 4rem;
+  }
+  
   video {
     width: 100%;
     height: 100vh;
     max-height: 100%;
     object-fit: cover;
   }
-
-  video::-webkit-media-controls-start-playback-button {
-    display: none !important;
+  
+  mux-video {
+    --controls: none;
+    width: 100%;
+    height: 100vh;
+    max-height: 100%;
+    object-fit: cover;
   }
+
+  mux-player {
+    --controls: none;
+    width: 100%;
+    height: 100vh;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  
+  /* video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+  } */
 
   .videoPlayer-content {
     object-fit: cover;
@@ -30,8 +58,7 @@ export const VideoPlayerContainer = styled.div<{ opacity: number}>`
     top: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-end;
     color: white;
 
     .videoPlayer-top {
@@ -40,6 +67,31 @@ export const VideoPlayerContainer = styled.div<{ opacity: number}>`
       width: 100%;
       justify-content: space-between;
       align-items: center;
+      justify-content: center;
+
+      .swipe-action-icon {
+        opacity: ${({ opacity }) => opacity};
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        color: #525252;
+
+        .swipe-action-icon-top {
+          font-size: 4rem;
+        }
+        .swipe-action-icon-bottom {
+          font-size: 2rem;
+          top: 1em;
+          position: absolute;
+        }
+
+        polygon {
+          fill: white;
+        }
+      }
 
       .videoPlayer-top-close {
         cursor: pointer;
@@ -48,6 +100,7 @@ export const VideoPlayerContainer = styled.div<{ opacity: number}>`
         margin-left: 1em;
         z-index: 4;
         opacity: ${({ opacity }) => opacity};
+
         svg {
           font-size: 4rem;
         }
@@ -71,7 +124,6 @@ export const VideoPlayerContainer = styled.div<{ opacity: number}>`
     }
 
     .video-player-middle {
-      
       padding-right: -0.6em;
       width: 100%;
       display: flex;
@@ -79,7 +131,7 @@ export const VideoPlayerContainer = styled.div<{ opacity: number}>`
       justify-content: space-between;
       opacity: 0.15;
       font-size: 7em;
-      
+
       polygon {
         fill: white;
       }
@@ -92,13 +144,37 @@ export const VideoPlayerContainer = styled.div<{ opacity: number}>`
         margin-right: -0.15em;
       }
     }
+    
     .videoPlayer-bottom {
       width: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: flex-end;
-      align-content: flex-end;
-      align-items: flex-end;
+      justify-content: space-between;
+
+      .swipe-action-icon-bottom {
+        opacity: ${({ opacity }) => opacity};
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        color: white;
+
+        .swipe-action-icon-top {
+          position: absolute;
+          font-size: 2rem;
+          bottom: 1.4em;
+        }
+        .swipe-action-icon-bottom {
+          font-size: 4rem;
+
+        }
+
+        polygon {
+          fill: white;
+        }
+      }
 
       .videoPlayer-mute-icon {
         opacity: ${({ opacity }) => opacity};
