@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import Slider from "react-slick";
 import { useParams, useNavigate } from "react-router-dom";
@@ -8,12 +8,13 @@ import { client } from "../../util/api/client";
 import { VideoInfo } from "../../util/api/types";
 
 import "./VideoReels.styles.scss";
+import _ from "lodash";
 
 const VideoReels = () => {
   const [videos, setVideos] = useState<VideoInfo[]>([]);
   const { vanityUrl } = useParams();
   const navigate = useNavigate();
-  const wheelRef=useRef<HTMLDivElement>(null);
+  const wheelRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<any>(null);
   const handlers = useSwipeable({
     onSwipedUp: (eventData) => navigate("/home/upload/"),
@@ -42,41 +43,33 @@ const VideoReels = () => {
   }, []);
 
   useEffect(() => {
-    const wheel = wheelRef.current;
-
-    const handleWheelEvent = (event: WheelEvent) => {
-      const deltaY = event.deltaY;
-      if (deltaY < 0) {
-        sliderRef.current.slickNext();
-      } else {
-        sliderRef.current.slickPrev();
-      }
-    };
-
-    wheel?.addEventListener("wheel", (event) => handleWheelEvent(event));
-
-    return () => {
-      wheel?.removeEventListener("wheel", (event) =>
-        handleWheelEvent(event)
-      );
-    };
-  }, []);
-
-  useEffect(() => {
     const handleEsc = (event: any) => {
-       if (event.keyCode === 27) {
+      if (event.keyCode === 27) {
         navigate("/home/");
       }
     };
-    window.addEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleEsc);
     return () => {
-      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener("keydown", handleEsc);
     };
   }, []);
 
+  const handleWheelEvent = (event: any) => {
+    const deltaY = event.deltaY;
+    if (deltaY < 0) {
+      sliderRef.current.slickNext();
+    } else {
+      sliderRef.current.slickPrev();
+    }
+  };
+
+  const onWheelThrottled = 
+    useMemo(() => _.throttle(handleWheelEvent, 2000, { trailing: false })
+  ,[]);
+
   return (
     <div className="video-reels" {...handlers}>
-      <div ref={wheelRef}> 
+      <div onWheel={onWheelThrottled} ref={wheelRef}>
         <Slider className="carousel" {...sliderSettings} ref={sliderRef}>
           {videos.map((video: any, index: React.Key | null | undefined) => {
             return <VideoPlayer videoId={video.id} key={index} />;

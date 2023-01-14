@@ -61,6 +61,9 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
 
   const pauseVideo = (e: any) => {
     const video = videoRef.current;
+   
+    const fco = document.getElementsByTagName('video');
+    console.log('mis hijos', fco);
     // video.volumen = 0;
     // console.log({video})
     if (isPlayed && video) {
