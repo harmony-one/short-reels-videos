@@ -33,7 +33,8 @@ const VideoUpload = () => {
   return (
     <VideoUploadDiv opacity={opaque} {...handlers}>
       {!uploadEnabled ? (
-        <div className="upload-icon" onClick={buttonHandler}>
+        <div className="upload-icon">
+           {/* onClick={buttonHandler}> */}
           <AiOutlinePlus />
         </div>
       ) : (

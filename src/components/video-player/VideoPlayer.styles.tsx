@@ -51,7 +51,7 @@ export const VideoPlayerContainer = styled.div<{ opacity: number }>`
   .videoPlayer-pause {
     position: absolute;
     object-fit: cover;
-    z-index: 230;
+    z-index: 23;
     top: 0;
     bottom: 0;
     left: 0;
