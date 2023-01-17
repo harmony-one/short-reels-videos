@@ -16,7 +16,7 @@ import 'rc-slider/assets/index.css';
 import { VideoPlayerContainer } from "./VideoPlayer.styles";
 
 type VideoPlayerProps = {
-  videoId: string;
+  vanityUrl: string;
 };
 
 const isVideoReady = (video: VideoInfo) => {
@@ -30,7 +30,7 @@ const getPlaybackId = (video: VideoInfo) => {
   return video.muxAsset.playback_ids[0].id;
 };
 
-const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
+const VideoPlayer = ({ vanityUrl }: VideoPlayerProps) => {
   const [muted, setMuted] = useState(true);
   const [opaque, setOpaque] = useState(0.5);
   const [isPlayed, setIsPlayed] = useState(true);
@@ -53,7 +53,7 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
 
   useEffect(() => {
     const getVideoInfo = async () => {
-      const responseData = await client.loadVideoInfo(videoId);
+      const responseData = await client.loadVideoBySequenceId(vanityUrl);
       setVideo(() => responseData);
       setIsVideoExistAndReady(isVideoReady(responseData));
       setMuted(true);
@@ -62,15 +62,10 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
     if (inView && !video) {
       getVideoInfo();
     }
-  }, [inView, videoId, video]);
+  }, [inView, vanityUrl, video]);
 
   const pauseVideo = (e: any) => {
     const video = videoRef.current;
-
-    const fco = document.getElementsByTagName("video");
-    console.log("mis hijos", fco);
-    // video.volumen = 0;
-    // console.log({video})
     if (isPlayed && video) {
       video.pause();
       setIsPlayed(false);
@@ -89,16 +84,13 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
   }, [inView]);
 
   const handleVolumenChange = (value: any) => {
-    console.log(value);
-    // event.stopPropagation();
     const player = videoRef.current;
     if (!player) {
       return;
     }
-    player.volume = value; // event.target.value;
+    player.volume = value; 
     setVolume(value);
   };
-  // console.log('volumen',videoRef?.current && videoRef.current.volumen);
 
   return (
     <VideoPlayerContainer opacity={opaque} ref={ref}>

@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
 import { VideoInfo } from "../../util/api/types";
 import { client } from "../../util/api//client";
-import { Anchor, Box, Button, FileInput, Heading } from "grommet";
+import { Box, Button, FileInput, Heading } from "grommet";
 import { getVideoUrl } from "../../router";
+import { AnchorLink } from "../anchor-link/AnchorLink";
 
 const Upload = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -13,7 +14,6 @@ const Upload = () => {
     if (!e || !e.target.files) {
       return;
     }
-
     setFile(e.target.files[0]);
   };
 
@@ -39,7 +39,6 @@ const Upload = () => {
   return (
     <Box gap="medium">
       <Heading>Video uploader</Heading>
-
       <FileInput name="File" onChange={handleFileChange} />
 
       <Button
@@ -53,7 +52,7 @@ const Upload = () => {
 
       {result && (
         <div>
-          <Anchor href={getVideoUrl(result)}>Go To Video</Anchor>
+          <AnchorLink to={`/${result.sequenceId}`}>Go to videos</AnchorLink>
         </div>
       )}
       {result && <code>{JSON.stringify(result, null, 4)}</code>}

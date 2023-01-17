@@ -35,9 +35,10 @@ const VideoReels = () => {
     const getVideos = async () => {
       let videoList = await client.loadVideoList();
       if (vanityUrl) {
-        const index = videoList.findIndex((v: VideoInfo) => v.id === vanityUrl);
+        const index = videoList.findIndex((v: VideoInfo) => v.sequenceId+"" === vanityUrl);
         videoList.unshift(videoList.splice(index, 1)[0]);
       }
+      console.log(videoList);
       setVideos(videoList);
     };
     getVideos();
@@ -73,7 +74,7 @@ const VideoReels = () => {
     <div className="video-reels" {...handlers}>
       <Slider className="carousel" {...sliderSettings} ref={sliderRef}>
         {videos.map((video: any, index: React.Key | null | undefined) => {
-          return <VideoPlayer videoId={video.id} key={index} />;
+          return <VideoPlayer vanityUrl={video.sequenceId} key={index} />;
         })}
       </Slider>
       <div className="video-reels-wheel" onWheel={onWheelThrottled} ref={wheelRef}>

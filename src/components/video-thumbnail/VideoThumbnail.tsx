@@ -10,7 +10,7 @@ type VideoThumbnailProps = {
 const VideoThumbnail = ({ video }: VideoThumbnailProps) => {
   const navigate = useNavigate();
 
-  const watchVideo = (vanityUrl: string) => {
+  const watchVideo = (vanityUrl: number) => {
     navigate(`/${vanityUrl}`);
   };
 
@@ -25,7 +25,7 @@ const VideoThumbnail = ({ video }: VideoThumbnailProps) => {
     <div className="thumbnail">
       <img
         src={getVideoPreviewUrl(video)}
-        onClick={() => watchVideo(video.id)}
+        onClick={() => watchVideo(video.sequenceId)}
         alt={"video thumbnail"}
       />
     </div>
