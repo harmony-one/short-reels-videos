@@ -1,16 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-
-import { client } from "../../util/api/client";
-import { VideoInfo } from "../../util/api/types";
+import { useNavigate } from "react-router-dom";
 
 import MuxPlayer from "@mux/mux-player-react";
 import MuxVideo from "@mux/mux-video-react";
 import MuxPlayerElement from "@mux/mux-player";
-
+import { useSwipeable } from "react-swipeable";
 import Slider from "rc-slider";
-
 import { BsVolumeMuteFill, BsVolumeDownFill } from "react-icons/bs";
+
+import { client } from "../../util/api/client";
+import { VideoInfo } from "../../util/api/types";
 
 import 'rc-slider/assets/index.css';
 import { VideoPlayerContainer } from "./VideoPlayer.styles";
@@ -38,7 +38,13 @@ const VideoPlayer = ({ vanityUrl }: VideoPlayerProps) => {
   const [video, setVideo] = useState<VideoInfo | undefined>(undefined);
   const [isVideoExistAndReady, setIsVideoExistAndReady] = useState(false);
   const videoRef = useRef<MuxPlayerElement>(null);
-
+  const navigate = useNavigate();
+  const handlers = useSwipeable({
+    onSwipedUp: (eventData) => navigate("/home/upload/"),
+    onSwipedDown: (eventData) => navigate("/home/"),
+    trackMouse: true,
+    preventScrollOnSwipe: true,
+  });
   const { ref, inView } = useInView({
     /* Optional options */
     rootMargin: "0px",
@@ -65,6 +71,7 @@ const VideoPlayer = ({ vanityUrl }: VideoPlayerProps) => {
   }, [inView, vanityUrl, video]);
 
   const pauseVideo = (e: any) => {
+    console.log('click');
     const video = videoRef.current;
     if (isPlayed && video) {
       video.pause();
@@ -113,7 +120,7 @@ const VideoPlayer = ({ vanityUrl }: VideoPlayerProps) => {
           }}
         />
       )}
-      <div className="videoPlayer-content" onClick={pauseVideo}>
+      <div className="videoPlayer-content">
         <div className="videoPlayer-bottom">
           <div className="videoPlayer-volume">
             {muted ? (
@@ -141,6 +148,7 @@ const VideoPlayer = ({ vanityUrl }: VideoPlayerProps) => {
           </div>
         </div>
       </div>
+      <div className='videoPlayer-pause' onClick={pauseVideo} {...handlers}/>
     </VideoPlayerContainer>
   );
 };

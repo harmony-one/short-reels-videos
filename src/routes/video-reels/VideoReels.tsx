@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { useSwipeable } from "react-swipeable";
 import Slider from "react-slick";
 import _ from "lodash";
 
@@ -17,12 +16,6 @@ const VideoReels = () => {
   const navigate = useNavigate();
   const wheelRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<any>(null);
-  const handlers = useSwipeable({
-    onSwipedUp: (eventData) => navigate("/home/upload/"),
-    onSwipedDown: (eventData) => navigate("/home/"),
-    trackMouse: true,
-    preventScrollOnSwipe: true,
-  });
 
   const sliderSettings = {
     infinite: true,
@@ -77,8 +70,6 @@ const VideoReels = () => {
           return <VideoPlayer vanityUrl={video.sequenceId} key={index} />;
         })}
       </Slider>
-      <div className="video-reels-wheel" {...handlers}>
-      </div>
     </div>
   );
 };

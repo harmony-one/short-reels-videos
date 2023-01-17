@@ -48,6 +48,19 @@ export const VideoPlayerContainer = styled.div<{ opacity: number }>`
     display: none !important;
   } */
 
+  .videoPlayer-pause {
+    position: absolute;
+    object-fit: cover;
+    z-index: 230;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
   .videoPlayer-content {
     object-fit: cover;
     z-index: 20;
