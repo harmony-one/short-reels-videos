@@ -2,15 +2,21 @@
 @import "~slick-carousel/slick/slick-theme.css";
 
 .video-reels {
-  position: fixed;
-  position: absolute;
+  position: relative;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
+  z-index: 1;
+
+  .video-reels-wheel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 //css div that uses whole viewport on mobile devices?
-
-
-
-
-
