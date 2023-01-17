@@ -71,13 +71,13 @@ const VideoReels = () => {
   ,[]);
 
   return (
-    <div className="video-reels" {...handlers}>
+    <div className="video-reels" onWheel={onWheelThrottled} ref={wheelRef}>
       <Slider className="carousel" {...sliderSettings} ref={sliderRef}>
         {videos.map((video: any, index: React.Key | null | undefined) => {
           return <VideoPlayer vanityUrl={video.sequenceId} key={index} />;
         })}
       </Slider>
-      <div className="video-reels-wheel" onWheel={onWheelThrottled} ref={wheelRef}>
+      <div className="video-reels-wheel" {...handlers}>
       </div>
     </div>
   );
