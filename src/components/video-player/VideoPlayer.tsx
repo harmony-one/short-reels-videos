@@ -1,14 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
-import { client } from '../../util/api/client'
-import { VideoInfo } from '../../util/api/types';
+import { client } from "../../util/api/client";
+import { VideoInfo } from "../../util/api/types";
 
 import MuxPlayer from "@mux/mux-player-react";
 import MuxVideo from "@mux/mux-video-react";
+import MuxPlayerElement from "@mux/mux-player";
+
+import Slider from "rc-slider";
 
 import { BsVolumeMuteFill, BsVolumeDownFill } from "react-icons/bs";
 
+import 'rc-slider/assets/index.css';
 import { VideoPlayerContainer } from "./VideoPlayer.styles";
 
 type VideoPlayerProps = {
@@ -30,9 +34,10 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
   const [muted, setMuted] = useState(true);
   const [opaque, setOpaque] = useState(0.5);
   const [isPlayed, setIsPlayed] = useState(true);
+  const [volume, setVolume] = useState(0.5);
   const [video, setVideo] = useState<VideoInfo | undefined>(undefined);
   const [isVideoExistAndReady, setIsVideoExistAndReady] = useState(false);
-  const videoRef = useRef<any>(null);
+  const videoRef = useRef<MuxPlayerElement>(null);
 
   const { ref, inView } = useInView({
     /* Optional options */
@@ -61,9 +66,9 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
 
   const pauseVideo = (e: any) => {
     const video = videoRef.current;
-   
-    const fco = document.getElementsByTagName('video');
-    console.log('mis hijos', fco);
+
+    const fco = document.getElementsByTagName("video");
+    console.log("mis hijos", fco);
     // video.volumen = 0;
     // console.log({video})
     if (isPlayed && video) {
@@ -71,7 +76,7 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
       setIsPlayed(false);
     } else {
       video && video.play();
-      
+
       setIsPlayed(true);
     }
   };
@@ -79,14 +84,27 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
   useEffect(() => {
     if (!inView) {
       setOpaque(0.5);
-    } 
+    }
     setMuted(true);
   }, [inView]);
 
+  const handleVolumenChange = (value: any) => {
+    console.log(value);
+    // event.stopPropagation();
+    const player = videoRef.current;
+    if (!player) {
+      return;
+    }
+    player.volume = value; // event.target.value;
+    setVolume(value);
+  };
   // console.log('volumen',videoRef?.current && videoRef.current.volumen);
+
   return (
     <VideoPlayerContainer opacity={opaque} ref={ref}>
-      {!isVideoExistAndReady && <div className='videoPlayer-preparation'>...</div>}
+      {!isVideoExistAndReady && (
+        <div className="videoPlayer-preparation">...</div>
+      )}
       {inView && video && isVideoExistAndReady && (
         <MuxPlayer
           ref={videoRef}
@@ -105,10 +123,29 @@ const VideoPlayer = ({ videoId }: VideoPlayerProps) => {
       )}
       <div className="videoPlayer-content" onClick={pauseVideo}>
         <div className="videoPlayer-bottom">
-          <div style={{ width: "3em" }}></div>
-          <div className="swipe-action-icon-bottom"></div>
-          <div className="videoPlayer-mute-icon" onClick={muteVideo}>
-            {muted ? <BsVolumeMuteFill /> : <BsVolumeDownFill />}
+          <div className="videoPlayer-volume">
+            {muted ? (
+              <div className="videoPlayer-mute-icon" onClick={muteVideo}>
+                <BsVolumeMuteFill />
+              </div>
+            ) : (
+              <>
+                <div className="videoPlayer-volume-slide">
+                  <Slider
+                    vertical
+                    value={volume}
+                    min={0}
+                    max={1}
+                    step={0.1}
+                    onChange={handleVolumenChange}
+                    handleStyle={{ width: 27, height: 27, marginLeft: -11 }}
+                  />
+                </div>
+                <div className="videoPlayer-mute-icon" onClick={muteVideo}>
+                  <BsVolumeDownFill />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

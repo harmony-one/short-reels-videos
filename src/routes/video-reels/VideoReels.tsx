@@ -1,14 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
 import { useSwipeable } from "react-swipeable";
 import Slider from "react-slick";
-import { useParams, useNavigate } from "react-router-dom";
+import _ from "lodash";
 
 import VideoPlayer from "../../components/video-player/VideoPlayer";
 import { client } from "../../util/api/client";
 import { VideoInfo } from "../../util/api/types";
 
 import "./VideoReels.styles.scss";
-import _ from "lodash";
 
 const VideoReels = () => {
   const [videos, setVideos] = useState<VideoInfo[]>([]);
@@ -55,6 +56,7 @@ const VideoReels = () => {
   }, []);
 
   const handleWheelEvent = (event: any) => {
+    event.stopPropagation();
     const deltaY = event.deltaY;
     if (deltaY < 0) {
       sliderRef.current.slickNext();
@@ -69,12 +71,12 @@ const VideoReels = () => {
 
   return (
     <div className="video-reels" {...handlers}>
-      <div onWheel={onWheelThrottled} ref={wheelRef}>
-        <Slider className="carousel" {...sliderSettings} ref={sliderRef}>
-          {videos.map((video: any, index: React.Key | null | undefined) => {
-            return <VideoPlayer videoId={video.id} key={index} />;
-          })}
-        </Slider>
+      <Slider className="carousel" {...sliderSettings} ref={sliderRef}>
+        {videos.map((video: any, index: React.Key | null | undefined) => {
+          return <VideoPlayer videoId={video.id} key={index} />;
+        })}
+      </Slider>
+      <div className="video-reels-wheel" onWheel={onWheelThrottled} ref={wheelRef}>
       </div>
     </div>
   );
