@@ -1,61 +1,77 @@
-import React, { ChangeEvent, useCallback, useState } from "react";
+import React, { ChangeEvent, useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { Box } from "grommet";
+import { Spinner } from "grommet";
+
 import { VideoInfo } from "../../util/api/types";
 import { client } from "../../util/api//client";
-import { Box, Button, FileInput, Heading } from "grommet";
-import { getVideoUrl } from "../../router";
-import { AnchorLink } from "../anchor-link/AnchorLink";
+import { AppText } from "../../util/appText";
 
-const Upload = () => {
+type UploadProps = {
+  children: JSX.Element;
+};
+
+const Upload = ({ children }: UploadProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<VideoInfo | undefined>();
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const handleFileChange = (e?: ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
     if (!e || !e.target.files) {
       return;
     }
+    console.log(e.target.files[0]);
     setFile(e.target.files[0]);
   };
 
-  const handleUpload = useCallback(async () => {
-    if (!file || uploading) {
-      return;
+  useEffect(() => {
+    const videoUpload = async () => {
+      let data = new FormData();
+      data.append("video", file!);
+      const response = await client.uploadVideo(data);
+      console.log(response);
+      setResult(response);
+    };
+    if (file) {
+      setUploading(true);
+      videoUpload();
     }
+  }, [file]);
 
-    var data = new FormData();
-    data.append("video", file);
+  useEffect(() => {
+    if (result) {
+      toast.success(AppText.upload.success);
+      navigate("/home/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
 
-    setUploading(() => {
-      return true;
-    });
-
-    const response = await client.uploadVideo(data);
-
-    setResult(response);
-
-    setUploading(() => false);
-  }, [uploading, file]);
+  const getFile = () => {
+    const inputFile = inputFileRef.current;
+    if (inputFile) {
+      inputFile.click();
+    }
+  };
 
   return (
-    <Box gap="medium">
-      <Heading>Video uploader</Heading>
-      <FileInput name="File" onChange={handleFileChange} />
-
-      <Button
-        primary
-        label="Upload"
-        disabled={uploading}
-        onClick={handleUpload}
+    <Box onClick={getFile}>
+      <input
+        type="file"
+        hidden
+        onChange={handleFileChange}
+        ref={inputFileRef}
       />
-
-      {uploading && <div>upload...</div>}
-
-      {result && (
+      {!uploading && children}
+      {uploading && (
         <div>
-          <AnchorLink to={`/${result.sequenceId}`}>Go to videos</AnchorLink>
+          <Spinner size="large" />
         </div>
       )}
-      {result && <code>{JSON.stringify(result, null, 4)}</code>}
     </Box>
   );
 };

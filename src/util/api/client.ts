@@ -11,7 +11,7 @@ export const client = {
 
     const responseData = await response.json();
 
-    return responseData.data.slice(0,12);
+    return responseData.data.slice(0,14);
   },
   uploadVideo: async (data: FormData) => {
     const response = await fetch(`${HOST}/upload`, {

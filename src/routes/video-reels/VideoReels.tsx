@@ -27,6 +27,7 @@ const VideoReels = () => {
   useEffect(() => {
     const getVideos = async () => {
       let videoList = await client.loadVideoList();
+      console.log('list update',videoList);
       if (vanityUrl) {
         const index = videoList.findIndex((v: VideoInfo) => v.sequenceId+"" === vanityUrl);
         videoList.unshift(videoList.splice(index, 1)[0]);
@@ -47,6 +48,7 @@ const VideoReels = () => {
     return () => {
       window.removeEventListener("keydown", handleEsc);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleWheelEvent = (event: any) => {

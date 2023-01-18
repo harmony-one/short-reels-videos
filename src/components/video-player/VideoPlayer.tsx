@@ -3,7 +3,6 @@ import { useInView } from "react-intersection-observer";
 import { useNavigate } from "react-router-dom";
 
 import MuxPlayer from "@mux/mux-player-react";
-import MuxVideo from "@mux/mux-video-react";
 import MuxPlayerElement from "@mux/mux-player";
 import { useSwipeable } from "react-swipeable";
 import Slider from "rc-slider";
@@ -29,6 +28,10 @@ const getPlaybackId = (video: VideoInfo) => {
   }
   return video.muxAsset.playback_ids[0].id;
 };
+
+function isNumeric(value: string) {
+  return /^-?\d+$/.test(value);
+}
 
 const VideoPlayer = ({ vanityUrl }: VideoPlayerProps) => {
   const [muted, setMuted] = useState(true);
@@ -59,7 +62,13 @@ const VideoPlayer = ({ vanityUrl }: VideoPlayerProps) => {
 
   useEffect(() => {
     const getVideoInfo = async () => {
-      const responseData = await client.loadVideoBySequenceId(vanityUrl);
+      let responseData: any;
+      console.log(vanityUrl, isNumeric(vanityUrl));
+      if (isNumeric(vanityUrl)) {
+        responseData = await client.loadVideoBySequenceId(vanityUrl);
+      } else {
+        responseData = await client.loadVideoByUrl(vanityUrl);
+      }
       setVideo(() => responseData);
       setIsVideoExistAndReady(isVideoReady(responseData));
       setMuted(true);
