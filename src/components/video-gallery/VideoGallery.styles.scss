@@ -1,4 +1,5 @@
 .video-gallery {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 6.25em auto auto;

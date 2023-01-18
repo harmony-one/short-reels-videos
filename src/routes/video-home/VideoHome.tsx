@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
-
+import _ from "lodash";
 import VideoGallery from "../../components/video-gallery/VideoGallery";
 import { client } from "../../util/api/client";
 import { VideoInfo } from "../../util/api/types";
@@ -26,9 +26,22 @@ const VideoHome = () => {
     loadVideoList();
   }, [loadVideoList]);
 
+  const handleWheelEvent = (event: any) => {
+    event.stopPropagation();
+    const deltaY = event.deltaY;
+    if (deltaY > 0) {
+      navigate('/');
+    }
+  };
+
+  const onWheelThrottled = 
+    useMemo(() => _.throttle(handleWheelEvent, 2000, { trailing: false })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  ,[]);
+
   return (
     <>
-      <div className="video-home" {...handlers}>
+      <div className="video-home" {...handlers} onWheel={onWheelThrottled}>
         <VideoGallery videos={videoList} />
       </div>
     </>
