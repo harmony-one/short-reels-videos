@@ -27,12 +27,10 @@ const VideoReels = () => {
   useEffect(() => {
     const getVideos = async () => {
       let videoList = await client.loadVideoList();
-      console.log('list update',videoList);
       if (vanityUrl) {
         const index = videoList.findIndex((v: VideoInfo) => v.sequenceId+"" === vanityUrl);
         videoList.unshift(videoList.splice(index, 1)[0]);
       }
-      console.log(videoList);
       setVideos(videoList);
     };
     getVideos();
@@ -54,15 +52,25 @@ const VideoReels = () => {
   const handleWheelEvent = (event: any) => {
     event.stopPropagation();
     const deltaY = event.deltaY;
-    if (deltaY < 0) {
-      sliderRef.current.slickNext();
+    const deltaX = event.deltaX;
+    if (Math.abs(deltaY) === 0) {
+      if (deltaX < 0) {
+        sliderRef.current.slickNext();
+      } else {
+        sliderRef.current.slickPrev();
+      }
     } else {
-      sliderRef.current.slickPrev();
+      if (deltaY < 0) {
+        navigate("/home/upload/");
+      } else {
+        navigate("/home/");
+      }
     }
   };
 
   const onWheelThrottled = 
     useMemo(() => _.throttle(handleWheelEvent, 2000, { trailing: false })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   ,[]);
 
   return (

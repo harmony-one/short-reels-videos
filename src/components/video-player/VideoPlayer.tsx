@@ -63,7 +63,6 @@ const VideoPlayer = ({ vanityUrl }: VideoPlayerProps) => {
   useEffect(() => {
     const getVideoInfo = async () => {
       let responseData: any;
-      console.log(vanityUrl, isNumeric(vanityUrl));
       if (isNumeric(vanityUrl)) {
         responseData = await client.loadVideoBySequenceId(vanityUrl);
       } else {
@@ -80,7 +79,6 @@ const VideoPlayer = ({ vanityUrl }: VideoPlayerProps) => {
   }, [inView, vanityUrl, video]);
 
   const pauseVideo = (e: any) => {
-    console.log('click');
     const video = videoRef.current;
     if (isPlayed && video) {
       video.pause();
