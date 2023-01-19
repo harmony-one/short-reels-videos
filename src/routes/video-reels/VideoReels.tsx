@@ -9,6 +9,8 @@ import { client } from "../../util/api/client";
 import { VideoInfo } from "../../util/api/types";
 
 import "./VideoReels.styles.scss";
+import { Page } from "grommet";
+import { AppPage } from "../../components/styles/AppPage.styles";
 
 const VideoReels = () => {
   const [videos, setVideos] = useState<VideoInfo[]>([]);
@@ -28,7 +30,9 @@ const VideoReels = () => {
     const getVideos = async () => {
       let videoList = await client.loadVideoList();
       if (vanityUrl) {
-        const index = videoList.findIndex((v: VideoInfo) => v.sequenceId+"" === vanityUrl);
+        const index = videoList.findIndex(
+          (v: VideoInfo) => v.sequenceId + "" === vanityUrl
+        );
         videoList.unshift(videoList.splice(index, 1)[0]);
       }
       setVideos(videoList);
@@ -46,7 +50,7 @@ const VideoReels = () => {
     return () => {
       window.removeEventListener("keydown", handleEsc);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleWheelEvent = (event: any) => {
@@ -68,19 +72,23 @@ const VideoReels = () => {
     }
   };
 
-  const onWheelThrottled = 
-    useMemo(() => _.throttle(handleWheelEvent, 2000, { trailing: false })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  ,[]);
+  const onWheelThrottled = useMemo(
+    () => _.throttle(handleWheelEvent, 2000, { trailing: false }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
-    <div className="video-reels" onWheel={onWheelThrottled} ref={wheelRef}>
+    <AppPage onWheel={onWheelThrottled} ref={wheelRef}>
       <Slider className="carousel" {...sliderSettings} ref={sliderRef}>
         {videos.map((video: any, index: React.Key | null | undefined) => {
           return <VideoPlayer vanityUrl={video.sequenceId} key={index} />;
         })}
       </Slider>
-    </div>
+    </AppPage>
+    // <div className="video-reels" >
+
+    // </div>
   );
 };
 

@@ -1,7 +1,7 @@
 {
   "short_name": "Radical Videos",
   "name": "Radical Videos",
-  "display": "fullscreen",
+  "display": "standalone",
   "icons": [
     {
       "src": "favicon.ico",
@@ -19,7 +19,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/",
+  "start_url": "/?standalone=true",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
