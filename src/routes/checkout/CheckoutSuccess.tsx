@@ -9,6 +9,12 @@ const CheckoutSuccess = () => {
   // const { tokenUuid, userUuid } = useParams();
   const navigate = useNavigate();
 
+  useEffect(() => {
+      // For demo: set subscribed flag in LocalStorage
+      // TODO: move to store
+      localStorage.setItem('stripe_subscription_start', Date.now().toString())
+  }, [])
+
   const handleButton = () => {
     navigate('/'); // nfts/gallery/${userUuid}`);
     //navigate(`/nfts/collectible/${tokenUuid}`);

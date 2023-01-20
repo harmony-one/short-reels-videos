@@ -20,6 +20,8 @@ import Subscribe from "./routes/subscribe/Subscribe";
 import "./App.css";
 import CheckoutSuccess from "./routes/checkout/CheckoutSuccess";
 import CheckoutFailure from "./routes/checkout/CheckoutFailure";
+import { Grommet } from "grommet";
+import {theme} from "./util/theme";
 
 
 const projectId = process.env.REACT_APP_WALLETCONNECT_PROJECTID!;
@@ -50,17 +52,19 @@ function App() {
           <title>.s.country videos | Harmony</title>
           <meta name="description" content="Description" />
         </Helmet>
-        <Routes>
-          <Route path="/" element={<Navigation />} >
-            <Route path="/" element={<VideoHome />} />
-            <Route path="upload/" element={<VideoUpload />} />
-            <Route path="subscribe/" element={<Subscribe />} />
-          </Route>
-          <Route path="/:vanityUrl" element={<VideoReels />} />
-          <Route path="success/" element={<CheckoutSuccess />}/>
-          <Route path="cancel/" element={<CheckoutFailure />} />
-        </Routes>
-        <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+        <Grommet theme={theme}>
+          <Routes>
+            <Route path="/" element={<Navigation />} >
+              <Route path="/" element={<VideoHome />} />
+              <Route path="upload/" element={<VideoUpload />} />
+              <Route path="subscribe/" element={<Subscribe />} />
+            </Route>
+            <Route path="/:vanityUrl" element={<VideoReels />} />
+            <Route path="success/" element={<CheckoutSuccess />}/>
+            <Route path="cancel/" element={<CheckoutFailure />} />
+          </Routes>
+          <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+        </Grommet>
       </WagmiConfig>
     </div>
   );
