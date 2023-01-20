@@ -13,6 +13,7 @@ const CheckoutSuccess = () => {
       // For demo: set subscribed flag in LocalStorage
       // TODO: move to store
       localStorage.setItem('stripe_subscription_start', Date.now().toString())
+      window.open('/', '_self')
   }, [])
 
   const handleButton = () => {
