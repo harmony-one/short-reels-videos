@@ -15,8 +15,11 @@
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
     "@types/react-slick": "^0.23.10",
+    "@walletconnect/sign-client": "^2.2.1",
+    "@walletconnect/web3-provider": "^1.8.0",
     "@web3modal/ethereum": "2.0.0-beta.7",
     "@web3modal/react": "2.0.0-beta.7",
+    "@web3modal/standalone": "^2.0.0",
     "axios": "^1.2.2",
     "ethers": "^5.7.2",
     "gh-pages": "^4.0.0",
@@ -40,9 +43,10 @@
     "typescript": "^4.9.4",
     "video-react": "^0.16.0",
     "videojs": "^1.0.0",
-    "wagmi": "^0.10.3",
+    "wagmi": "0.8.6",
     "web-vitals": "^2.1.4",
-    "web3": "^1.8.1"
+    "web3": "^1.8.1",
+    "web3-eth-contract": "^1.8.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
