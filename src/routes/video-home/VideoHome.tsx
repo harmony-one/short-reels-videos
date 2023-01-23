@@ -14,6 +14,26 @@ const VideoHome = () => {
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [subscriptionStart, setSubscriptionStart] = useState(0)
 
+  const checkSubscription = () => {
+    const subscriptionStartedValue = +(localStorage.getItem('stripe_subscription_start') || 0)
+    if(Date.now() - subscriptionStartedValue < SubscriptionTimeout) {
+      setIsSubscribed(true)
+      setSubscriptionStart(subscriptionStartedValue)
+      const subscriptionEnds = SubscriptionTimeout - (Date.now() - subscriptionStartedValue)
+
+      setTimeout(() => {
+        onUnsubscribe()
+      }, subscriptionEnds)
+    }
+  }
+
+  const onSubscribe = () => {
+    const timeStart = Date.now()
+    localStorage.setItem('stripe_subscription_start', timeStart.toString())
+    setIsSubscribed(true)
+    setSubscriptionStart(timeStart)
+  }
+
   const onUnsubscribe = () => {
     localStorage.setItem('stripe_subscription_start', '0')
     setIsSubscribed(false)
@@ -27,18 +47,6 @@ const VideoHome = () => {
   }, []);
 
   useEffect(() => {
-    const checkSubscription = () => {
-      const subscriptionStartedValue = +(localStorage.getItem('stripe_subscription_start') || 0)
-      if(Date.now() - subscriptionStartedValue < SubscriptionTimeout) {
-        setIsSubscribed(true)
-        setSubscriptionStart(subscriptionStartedValue)
-        const subscriptionEnds = SubscriptionTimeout - (Date.now() - subscriptionStartedValue)
-
-        setTimeout(() => {
-          onUnsubscribe()
-        }, subscriptionEnds)
-      }
-    }
     checkSubscription()
   }, [])
 
@@ -46,6 +54,7 @@ const VideoHome = () => {
     isSubscribed,
     subscriptionStart,
     subscriptionTimeout: SubscriptionTimeout,
+    onSubscribe,
     onUnsubscribe
   }
 
